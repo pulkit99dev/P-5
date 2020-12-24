@@ -1,7 +1,8 @@
 const express = require('express');
+const cookieParser = require('cookie-parser')
 const port = 9000;
 const db = require('./config/mongoose')
-const ExpressLayouts = require('express-ejs-layouts');
+const expressLayouts = require('express-ejs-layouts');
 const SassMiddleware = require('node-sass-middleware');
 const User = require('./models/userSchema');
 
@@ -11,23 +12,23 @@ const passportLocal = require('./config/passport-local-strat');
 
 const MongoStore = require('connect-mongo')(session);
 
-const routes = require('./routes/index')
-
 
 const app = express();
 
+
+
 //setting up express layouts
-app.use(ExpressLayouts);
+app.use(expressLayouts);
 
-
+app.use(cookieParser());
 
 app.use(express.urlencoded());
 
 
 //calling & compiling SASS
 app.use(SassMiddleware({
-    src :'/assets/scss',
-    dest :'/assets/css',
+    src :'./assets/scss',
+    dest :'./assets/css',
     debug : true,
     outputStyle :'expanded',
     prefix :'/css'

@@ -19,8 +19,9 @@ passport.use(new LocalStrategy({
 
 passport.serializeUser(function(user, done){
     done(null, user.id)
-})
-passport.deserializeUser(function(err, user){
+});
+
+passport.deserializeUser(function(id, done){
     User.findById(id, function(err, user){
     if(err){
         console.log(err);
@@ -28,5 +29,19 @@ passport.deserializeUser(function(err, user){
     return done(null, user);
 })
 })
+
+passport.checkAuthentication = function(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    return res.redirect('/users/sign-in')
+}
+
+passport.setAuthenticatedUser = function(req, res, next){
+    if(req.isAuthenticated()){
+        res.locals.user = req.user
+    }
+    next();
+}
 
 module.exports = passport;
