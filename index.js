@@ -2,17 +2,35 @@ const express = require('express');
 const port = 9000;
 const db = require('./config/mongoose')
 const ExpressLayouts = require('express-ejs-layouts');
-const assets = require('./assets')
+const SassMiddleware = require('node-sass-middleware');
+// const assets = require('./assets')
+const routes = require('./routes/index')
 
 
 const app = express();
+
+//calling & compiling SASS
+app.use(SassMiddleware({
+    src :'/assets/scss',
+    dest :'/assets/css',
+    debug : true,
+    outputStyle :'expanded',
+    prefix :'/css'
+}))
+
+//setting up assets
+app.use(express.static('./assets'));
+
+// extracting styles & scripts
+app.set('layout extractStyles', true);
+app.set('layout extractScripts', true);
 
 //setting up views
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
 //setting up express layouts
-app.use(ExpressLayouts());
+app.use(ExpressLayouts);
 
 
 
@@ -20,6 +38,9 @@ app.use(express.urlencoded());
 
 
 
+
+//setting up routes
+app.use('/', require('./routes/index'))
 
 
 //local server
