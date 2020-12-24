@@ -4,7 +4,11 @@ const db = require('./config/mongoose')
 const ExpressLayouts = require('express-ejs-layouts');
 const SassMiddleware = require('node-sass-middleware');
 const User = require('./models/userSchema');
-// const assets = require('./assets')
+
+const session = require('express-session');
+const passport = require('passport');
+const passportLocal = require('./config/passport-local-strat');
+
 const routes = require('./routes/index')
 
 
