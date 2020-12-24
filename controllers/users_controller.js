@@ -1,12 +1,18 @@
 const User = require('../models/userSchema')
 
 module.exports.signup = function(req, res){
-    res.render('sign-up', {
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
+    return res.render('sign-up', {
         title :'Sign-up'
     })
 }
 
 module.exports.signin = function(req, res){
+    if (req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
     res.render('sign-in', {
         title :'Sign-in'
     })
@@ -23,7 +29,7 @@ module.exports.create = function(req, res){
         return res.redirect('back')
     };
     User.findOne({email : req.body.email}, function(err, user){
-        if(err){console.log(`Error while creating user`)
+        if(err){console.log(`Error while creating user`);
         return;}
         if(!user){
         User.create(req.body, function(err, user){

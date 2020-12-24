@@ -1,6 +1,6 @@
 const passport = require('passport');
 
-const LocalStrategy = require('passport-local');
+const LocalStrategy = require('passport-local').Strategy;
 
 const User = require('../models/userSchema');
 
@@ -24,11 +24,12 @@ passport.serializeUser(function(user, done){
 passport.deserializeUser(function(id, done){
     User.findById(id, function(err, user){
     if(err){
-        console.log(err);
+        console.log('err');
+        return done(err);
     }
     return done(null, user);
-})
-})
+});
+});
 
 passport.checkAuthentication = function(req, res, next){
     if(req.isAuthenticated()){
@@ -39,7 +40,7 @@ passport.checkAuthentication = function(req, res, next){
 
 passport.setAuthenticatedUser = function(req, res, next){
     if(req.isAuthenticated()){
-        res.locals.user = req.user
+        res.locals.user = req.user;
     }
     next();
 }

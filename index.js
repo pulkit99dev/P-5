@@ -15,14 +15,14 @@ const MongoStore = require('connect-mongo')(session);
 
 const app = express();
 
-
+app.use(express.urlencoded());
 
 //setting up express layouts
 app.use(expressLayouts);
 
 app.use(cookieParser());
 
-app.use(express.urlencoded());
+
 
 
 //calling & compiling SASS
@@ -68,7 +68,7 @@ app.use(passport.initialize())
 app.use(passport.session());
 
 
-
+app.use(passport.setAuthenticatedUser);
 
 
 //setting up routes
