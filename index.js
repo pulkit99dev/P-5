@@ -9,10 +9,20 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strat');
 
+const MongoStore = require('connect-mongo')(session);
+
 const routes = require('./routes/index')
 
 
 const app = express();
+
+//setting up express layouts
+app.use(ExpressLayouts);
+
+
+
+app.use(express.urlencoded());
+
 
 //calling & compiling SASS
 app.use(SassMiddleware({
@@ -34,12 +44,28 @@ app.set('layout extractScripts', true);
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-//setting up express layouts
-app.use(ExpressLayouts);
+app.use(session({
+    name : 'P-5',
+    secret : 'something',
+    saveUninitialized : false,
+    resave : false,
+    cookie :{
+        maxAge :(1000 * 60 * 100)
+    },
+    store : new MongoStore(
+        {
+            mongooseConnection : db,
+            autoRemove : 'disabled'
+        },
+        function(err){
+            console.log(err || 'connected to mongostore');
+        }
+    )
+}));
 
+app.use(passport.initialize())
+app.use(passport.session());
 
-
-app.use(express.urlencoded());
 
 
 

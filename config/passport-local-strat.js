@@ -17,4 +17,16 @@ passport.use(new LocalStrategy({
     }
 ))
 
+passport.serializeUser(function(user, done){
+    done(null, user.id)
+})
+passport.deserializeUser(function(err, user){
+    User.findById(id, function(err, user){
+    if(err){
+        console.log(err);
+    }
+    return done(null, user);
+})
+})
+
 module.exports = passport;
