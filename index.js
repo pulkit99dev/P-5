@@ -3,6 +3,7 @@ const port = 9000;
 const db = require('./config/mongoose')
 const ExpressLayouts = require('express-ejs-layouts');
 const SassMiddleware = require('node-sass-middleware');
+const User = require('./models/userSchema');
 // const assets = require('./assets')
 const routes = require('./routes/index')
 
