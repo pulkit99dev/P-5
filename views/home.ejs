@@ -1,7 +1,55 @@
 <title>
-    Home
+  Home
 </title>
 <body>
-    Home Page
-    
+<h1>Home Page</h1>
+
+<div>
+<h4>Posts</h4>
+  <form action="/posts/create" method="POST">
+    <textarea name="content" id="" cols="30" rows="4" placeholder="type here..."></textarea>
+    <input type="submit" name="Post">
+  </form>  
+</div>
+
+<div>
+  <ul>
+  <% for(post of posts) { %>
+      <li>
+        <p><%= post.content %>
+        <br>
+        <small><%= post.user.name %></small>  
+        </p>
+
+        <div>
+          <% if(locals.user) { %>
+          <form action="/comments/create" method="POST">
+            <input type="text" name="content" id="" placeholder="Comment here...">
+            <input type="submit" value="Add Comment" name="" id="">
+          </form>
+          <% } >
+        </div>
+
+      </li>
+      <% } %>
+  </ul>
+
+  <div>
+    <ul>
+      <% for (comment of post.comments) { %>
+      <p>
+        <%= comment.content %>
+        <br>
+        <small>
+          <%= comment.user.name %>
+        </small>
+      </p>
+      
+      <% } %>
+    </ul>
+  </div>
+
+</div>
+  
+
 </body>
