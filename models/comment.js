@@ -2,16 +2,16 @@ const mongoose = require('mongoose')
 
 let commentSchema = new mongoose.Schema({
     content:{
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         require: true
     },
     user:{
         type: mongoose.Schema.Types.ObjectId,
-        require : true
+        ref : 'User'
     },
     post :{
         type: mongoose.Schema.Types.ObjectId,
-        require : true
+        ref : 'Post'
     }
 },{
     timestamps: true
